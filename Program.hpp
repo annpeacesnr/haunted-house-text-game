@@ -17,6 +17,7 @@ class Program
 	private:
 	void SetupRooms();
 	int CreateRoom( string name, string description );
+	string HandleUserInput();
 	Room* m_ptrCurrentRoom;
 	vector<Room*> m_rooms;
 	bool m_done;
@@ -38,20 +39,6 @@ void Program::Run()
 	{
 		m_ptrCurrentRoom->OutputRoomInfo();
 
-		userInput = Menu::GetStringLine( "Now what?" );
-
-		if ( StringUtil::ToLower( userInput ) == "north" )
-		{
-			if (m_ptrCurrentRoom->CanGo( NORTH ))
-			{
-				status = "You went NORTH";
-				m_ptrCurrentRoom = m_ptrCurrentRoom->ptrNeighbourNorth;
-			}
-			else
-			{
-				status = "You can't go here!";
-			}
-		}
 		cout << "\t" << status << endl;
 		Menu::Pause();
 	}
@@ -88,6 +75,67 @@ int Program::CreateRoom( string name, string description )
 	room->Setup( name, description );
 	m_rooms.push_back( room );
 	return m_rooms.size();
+}
+
+string Program::HandleUserInput()
+{
+	string status = "";
+
+	string userInput = Menu::GetStringLine( "Now what?" );
+
+	if (StringUtil::ToLower(userInput) == "north")
+	{
+		if (m_ptrCurrentRoom->CanGo(NORTH))
+		{
+			status = "You went NORTH";
+			m_ptrCurrentRoom = m_ptrCurrentRoom->ptrNeighbourNorth;
+		}
+		else
+		{
+			status = "You can't go here!";
+		}
+	}
+
+		else if (StringUtil::ToLower(userInput) == "south")
+	{
+		if (m_ptrCurrentRoom->CanGo(SOUTH))
+		{
+			status = "You went SOUTH";
+			m_ptrCurrentRoom = m_ptrCurrentRoom->ptrNeighbourNorth;
+		}
+		else
+		{
+			status = "You can't go here!";
+		}
+	}
+
+		else if (StringUtil::ToLower(userInput) == "east")
+	{
+		if (m_ptrCurrentRoom->CanGo(EAST))
+		{
+			status = "You went EAST";
+			m_ptrCurrentRoom = m_ptrCurrentRoom->ptrNeighbourNorth;
+		}
+		else
+		{
+			status = "You can't go here!";
+		}
+	}
+
+		else if (StringUtil::ToLower(userInput) == "west")
+	{
+		if (m_ptrCurrentRoom->CanGo(WEST))
+		{
+			status = "You went WEST";
+			m_ptrCurrentRoom = m_ptrCurrentRoom->ptrNeighbourNorth;
+		}
+		else
+		{
+			status = "You can't go here!";
+		}
+	}
+
+	return status;
 }
 
 #endif
