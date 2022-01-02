@@ -37,9 +37,7 @@ void Program::Run()
 	{
 		m_ptrCurrentRoom->OutputRoomInfo();
 
-		cout << "Now what?" << endl;
-		cout << "> ";
-		getline( cin, userInput );
+		userInput = Menu::GetStringLine( "Now what?" );
 	}
 }
 
