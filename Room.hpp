@@ -7,6 +7,8 @@ using namespace std;
 
 #include "Utilities.hpp"
 
+enum Direction { NORTH = 0, SOUTH = 1, EAST = 2, WEST = 3};
+
 struct Room
 {
     Room();
@@ -16,6 +18,7 @@ struct Room
 
     void OutputRoomInfo();
     void OutputNeighbours();
+    bool CanGo( Direction direction );
 
     string name;
     string description;
@@ -75,6 +78,28 @@ struct Room
         if ( ptrNeighbourWest != nullptr ) { cout << "(W)est "; }
 
         cout << endl;
+    }
+
+    bool Room::CanGo( Direction direction )
+    {
+        if ( direction == NORTH && ptrNeighbourNorth != nullptr )
+        {
+            return true;
+        }
+        else if ( direction == SOUTH && ptrNeighbourSouth != nullptr )
+        {
+            return true;
+        }
+        else if ( direction == EAST && ptrNeighbourEast != nullptr )
+        {
+            return true;
+        }
+        else if ( direction == WEST && ptrNeighbourWest != nullptr )
+        {
+            return true;
+        }
+
+        return false;
     }
 
 

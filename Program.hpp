@@ -32,12 +32,28 @@ Program::Program()
 void Program::Run()
 {
 	string userInput;
+	string status;
 
 	while ( !m_done )
 	{
 		m_ptrCurrentRoom->OutputRoomInfo();
 
 		userInput = Menu::GetStringLine( "Now what?" );
+
+		if ( StringUtil::ToLower( userInput ) == "north" )
+		{
+			if (m_ptrCurrentRoom->CanGo( NORTH ))
+			{
+				status = "You went NORTH";
+				m_ptrCurrentRoom = m_ptrCurrentRoom->ptrNeighbourNorth;
+			}
+			else
+			{
+				status = "You can't go here!";
+			}
+		}
+		cout << "\t" << status << endl;
+		Menu::Pause();
 	}
 }
 
