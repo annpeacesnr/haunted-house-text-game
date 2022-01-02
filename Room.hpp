@@ -5,6 +5,8 @@
 #include <string>
 using namespace std;
 
+#include "Utilities.hpp"
+
 struct Room
 {
     Room();
@@ -55,19 +57,17 @@ struct Room
 
     void Room::OutputRoomInfo()
     {
-        cout << "-------------------------------------------------------------" << endl
-            << name << endl
-            << description << endl
-            << "-------------------------------------------------------------"
-            << endl;
-
+        Menu::ClearScreen();
+        Menu::Header( name );
+        cout << "\t" << description << endl;
         OutputNeighbours();
-        cout << "-------------------------------------------------------------" << endl << endl;
+
+        cout << endl << endl;
     }
 
     void Room::OutputNeighbours()
     {
-        cout << "You can go: ";
+        cout << " \t You can go: ";
 
         if ( ptrNeighbourNorth != nullptr ) { cout << "(N)orth "; }
         if ( ptrNeighbourSouth != nullptr ) { cout << "(S)outh "; }
