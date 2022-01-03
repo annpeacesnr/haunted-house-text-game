@@ -12,12 +12,14 @@ class Program
 {
 	public:
 	Program();
+  ~Program();
 	void Run();
 
 	private:
 	void SetupRooms();
 	int CreateRoom( string name, string description );
-	string HandleUserInput();
+  string HandleUserInput();
+  string userInput;
 	Room* m_ptrCurrentRoom;
 	vector<Room*> m_rooms;
 	bool m_done;
@@ -33,22 +35,40 @@ Program::Program()
 void Program::Run()
 {
 	string userInput;
-	string status;
+  
+  string status = "";
 
 	while ( !m_done )
 	{
 		m_ptrCurrentRoom->OutputRoomInfo();
 
-		cout << "\t" << status << endl;
-		Menu::Pause();
+    status = HandleUserInput();
+
+		cout << "Now what?" << endl;
+		cout << "> ";
+		std::getline( cin, userInput );
 	}
 }
 
 void Program::SetupRooms()
 {
-	int startRoom = CreateRoom( "Cave entrance", "ahead of you sits a cave" );
-	int car = CreateRoom( "Car", "you've parked your car here" );
-	int caveExit = CreateRoom( "Cave exit", "you're inside a cave, exit here" );
+	//int startRoom = CreateRoom( "Cave entrance", "ahead of you sits a cave" );
+	//int car = CreateRoom( "Car", "you've parked your car here" );
+	//int caveExit = CreateRoom( "Cave exit", "you're inside a cave, exit here" );
+
+  int startRoom = 	CreateRoom( "Cave entrance", "ahead of you sits a cave" );
+	int car = 			CreateRoom( "Car", "you've parked your car here" );
+	int caveExit = 		CreateRoom( "Cave exit N", "you're inside a cave, exit here" );
+	int caveLoop3 = 	CreateRoom( "Cave loop N", "you're in a narrow cave path that only goes forward" );
+	int caveLoop4 = 	CreateRoom( "Cave loop S", "you're in a narrow cave path that only goes forward" );
+	int cave5 = 		CreateRoom( "Cave exit S", "you're in a cave exit leading to the forest" );
+	int forestCave = 	CreateRoom( "Blocked cave entrance", "You are in a forest. The cave to the west has been blocked!" );
+	int forest7 = 		CreateRoom( "Cave exit S", "you're in a cave exit leading to the forest" );
+	int forest8 = 		CreateRoom( "Cave exit S", "you're in a cave exit leading to the forest" );
+	int ruins9 = 		CreateRoom( "Cave exit S", "you're in a cave exit leading to the forest" );
+	int ruins10 = 		CreateRoom( "Cave exit S", "you're in a cave exit leading to the forest" );
+	int ruins11 = 		CreateRoom( "Cave exit S", "you're in a cave exit leading to the forest" );
+	int ruins12 = 		CreateRoom( "Cave exit S", "you're in a cave exit leading to the forest" );
 
 	/*m_rooms[0].Setup( "Room0", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ornare viverra pulvinar." );
 	m_rooms[1].Setup( "Room1", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ornare viverra pulvinar." );
@@ -64,26 +84,77 @@ void Program::SetupRooms()
 	m_rooms[11].Setup( "Room11", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ornare viverra pulvinar." );
 	m_rooms[12].Setup( "Room12", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ornare viverra pulvinar." );*/
 
-	m_rooms[startRoom]->SetNeighbours( nullptr, (m_rooms[caveExit]), nullptr, m_rooms[car] );
+	/*m_rooms[startRoom]->SetNeighbours( nullptr, (m_rooms[caveExit]), nullptr, m_rooms[car] );*/
+
+  m_rooms[startRoom]
+		->SetNeighbours( 
+			nullptr, 				// North
+			m_rooms[caveExit], 		// South
+			m_rooms[car], 			// East
+			nullptr );				// West
+
+	m_rooms[car]
+		->SetNeighbours( 
+			nullptr, 				// North
+			nullptr, 				// South
+			nullptr, 				// East
+			m_rooms[startRoom]  	// West
+			);
+
+	m_rooms[caveExit]
+		->SetNeighbours( 
+			m_rooms[startRoom], 	// North
+			m_rooms[cave5], 		// South
+			nullptr, 				// East
+			m_rooms[caveLoop3] 		// West
+			);
+
+	m_rooms[caveLoop3]
+		->SetNeighbours( 
+			nullptr, 				// North
+			m_rooms[caveLoop4], 	// South
+			m_rooms[caveExit], 		// East
+			nullptr 				// West
+			);
+
+	m_rooms[caveLoop4]
+		->SetNeighbours( 
+			m_rooms[caveLoop3], 	// North
+			nullptr, 				// South
+			m_rooms[cave5], 		// East
+			nullptr 				// West
+			);
+
+	m_rooms[cave5]
+		->SetNeighbours( 
+			m_rooms[caveExit], 		// North
+			nullptr, 				// South
+			m_rooms[forestCave], 	// East
+			m_rooms[caveLoop4]  	// West
+			);
 
 	m_ptrCurrentRoom = m_rooms[startRoom];
 }
 
 int Program::CreateRoom( string name, string description )
 {
+  int index = m_rooms.size();
+
 	Room* room = new Room;
 	room->Setup( name, description );
 	m_rooms.push_back( room );
-	return m_rooms.size();
+	return index;
 }
 
 string Program::HandleUserInput()
 {
 	string status = "";
 
-	string userInput = Menu::GetStringLine( "Now what?" );
+  //std::string line;
+  //std::getline( cin, userInput );
+	//string userInput = getline( "Now what?" );
 
-	if (StringUtil::ToLower(userInput) == "north")
+	if (userInput == "north" || userInput == "n")
 	{
 		if (m_ptrCurrentRoom->CanGo(NORTH))
 		{
@@ -96,7 +167,7 @@ string Program::HandleUserInput()
 		}
 	}
 
-		else if (StringUtil::ToLower(userInput) == "south")
+		else if (userInput == "south" || userInput == "s")
 	{
 		if (m_ptrCurrentRoom->CanGo(SOUTH))
 		{
@@ -109,7 +180,7 @@ string Program::HandleUserInput()
 		}
 	}
 
-		else if (StringUtil::ToLower(userInput) == "east")
+		else if (userInput == "east" || userInput == "e")
 	{
 		if (m_ptrCurrentRoom->CanGo(EAST))
 		{
@@ -122,7 +193,7 @@ string Program::HandleUserInput()
 		}
 	}
 
-		else if (StringUtil::ToLower(userInput) == "west")
+		else if (userInput == "west" || userInput == "w")
 	{
 		if (m_ptrCurrentRoom->CanGo(WEST))
 		{
@@ -134,8 +205,24 @@ string Program::HandleUserInput()
 			status = "You can't go here!";
 		}
 	}
+	else
+	{
+		status = "Unknown command";
+	}
 
 	return status;
 }
 
-#endif
+Program::~Program()
+{
+	cout << "Freeing memory..." << endl;
+	for ( auto& ptrRoom : m_rooms )
+	{
+		if ( ptrRoom != nullptr )
+		{
+			delete ptrRoom;
+		}
+	}
+}
+
+#endif 

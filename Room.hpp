@@ -5,8 +5,6 @@
 #include <string>
 using namespace std;
 
-#include "Utilities.hpp"
-
 enum Direction { NORTH = 0, SOUTH = 1, EAST = 2, WEST = 3};
 
 struct Room
@@ -60,17 +58,19 @@ struct Room
 
     void Room::OutputRoomInfo()
     {
-        Menu::ClearScreen();
-        Menu::Header( name );
-        cout << "\t" << description << endl;
-        OutputNeighbours();
+        cout << "-------------------------------------------------------------" << endl
+            << name << endl
+            << description << endl
+            << "-------------------------------------------------------------"
+            << endl;
 
-        cout << endl << endl;
+        OutputNeighbours();
+        cout << "-------------------------------------------------------------" << endl << endl;
     }
 
     void Room::OutputNeighbours()
     {
-        cout << " \t You can go: ";
+        cout << "You can go: ";
 
         if ( ptrNeighbourNorth != nullptr ) { cout << "(N)orth "; }
         if ( ptrNeighbourSouth != nullptr ) { cout << "(S)outh "; }
@@ -103,4 +103,4 @@ struct Room
     }
 
 
-#endif
+#endif 
