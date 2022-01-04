@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-#include "Program.hpp"
+#include "Program.cpp"
 
 int main()
 {
