@@ -7,6 +7,7 @@
 using namespace std;
 
 #include "Room.hpp"
+#include "Utilities.hpp"
 
 class Program
 {
@@ -16,7 +17,7 @@ class Program
 	void Run();
 
 	private:
-	void SetupRooms();
+	bool SetupRooms();
 	int CreateRoom( string name, string description );
   string HandleUserInput();
   string userInput;
@@ -30,66 +31,48 @@ Program::Program()
 	m_ptrCurrentRoom = nullptr;
 	m_done = false;
 	SetupRooms();
+
+bool success = SetupRooms();
+    if ( !success )
+    {
+        m_done = true;
+    }
 }
 
 void Program::Run()
 {
-	string userInput;
-  
-  string status = "";
-
 	while ( !m_done )
 	{
-		m_ptrCurrentRoom->OutputRoomInfo();
+	m_ptrCurrentRoom->OutputRoomInfo();
 
-    status = HandleUserInput();
+    cout << endl << endl;
 
-		cout << "Now what?" << endl;
-		cout << "> ";
-		std::getline( cin, userInput );
+    HandleUserInput();
+
 	}
 }
 
-void Program::SetupRooms()
+bool Program::SetupRooms()
 {
-	//int startRoom = CreateRoom( "Cave entrance", "ahead of you sits a cave" );
-	//int car = CreateRoom( "Car", "you've parked your car here" );
-	//int caveExit = CreateRoom( "Cave exit", "you're inside a cave, exit here" );
 
-  int startRoom = 	CreateRoom( "Cave entrance", "ahead of you sits a cave" );
-	int car = 			CreateRoom( "Car", "you've parked your car here" );
-	int caveExit = 		CreateRoom( "Cave exit N", "you're inside a cave, exit here" );
-	int caveLoop3 = 	CreateRoom( "Cave loop N", "you're in a narrow cave path that only goes forward" );
-	int caveLoop4 = 	CreateRoom( "Cave loop S", "you're in a narrow cave path that only goes forward" );
-	int cave5 = 		CreateRoom( "Cave exit S", "you're in a cave exit leading to the forest" );
-	int forestCave = 	CreateRoom( "Blocked cave entrance", "You are in a forest. The cave to the west has been blocked!" );
-	int forest7 = 		CreateRoom( "Cave exit S", "you're in a cave exit leading to the forest" );
-	int forest8 = 		CreateRoom( "Cave exit S", "you're in a cave exit leading to the forest" );
-	int ruins9 = 		CreateRoom( "Cave exit S", "you're in a cave exit leading to the forest" );
-	int ruins10 = 		CreateRoom( "Cave exit S", "you're in a cave exit leading to the forest" );
-	int ruins11 = 		CreateRoom( "Cave exit S", "you're in a cave exit leading to the forest" );
-	int ruins12 = 		CreateRoom( "Cave exit S", "you're in a cave exit leading to the forest" );
-
-	/*m_rooms[0].Setup( "Room0", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ornare viverra pulvinar." );
-	m_rooms[1].Setup( "Room1", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ornare viverra pulvinar." );
-	m_rooms[2].Setup( "Room2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ornare viverra pulvinar." );
-	m_rooms[3].Setup( "Room3", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ornare viverra pulvinar." );
-	m_rooms[4].Setup( "Room4", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ornare viverra pulvinar." );
-	m_rooms[5].Setup( "Room5", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ornare viverra pulvinar." );
-	m_rooms[6].Setup( "Room6", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ornare viverra pulvinar." );
-	m_rooms[7].Setup( "Room7", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ornare viverra pulvinar." );
-	m_rooms[8].Setup( "Room8", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ornare viverra pulvinar." );
-	m_rooms[9].Setup( "Room9", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ornare viverra pulvinar." );
-	m_rooms[10].Setup( "Room10", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ornare viverra pulvinar." );
-	m_rooms[11].Setup( "Room11", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ornare viverra pulvinar." );
-	m_rooms[12].Setup( "Room12", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ornare viverra pulvinar." );*/
-
-	/*m_rooms[startRoom]->SetNeighbours( nullptr, (m_rooms[caveExit]), nullptr, m_rooms[car] );*/
+  int startRoom = 	CreateRoom( "House entrance", "Ahead of you sits the entrance." );
+	int car = 			CreateRoom( "Curbside", "You've parked your car here." );
+	int foyer = 		CreateRoom( "Foyer", "You're in the foyer of the building." );
+	int kitchen = 	CreateRoom( "Kitchen", "You're in the kitchen." );
+	int lounge = 	CreateRoom( "Lounge", "You're in the lounge." );
+	int corridor = 		CreateRoom( "Corridor", "You're in a corridor that leads to some stairs." );
+	int stairs = 	CreateRoom( "Staircase", "You are at the bottom of a staircase." );
+	int landing = 		CreateRoom( "Landing", "You're at the top of the landing." );
+	int drawRoom = 		CreateRoom( "Drawing Room", "You're in the drawing room." );
+	int bed2 = 		CreateRoom( "Landing", "You're further down the landing." );
+	int study = 		CreateRoom( "Study", "You've reached Albert's study." );
+	int bed3 = 		CreateRoom( "Guest Room", "You're in the guest room." );
+	int bed1 = 		CreateRoom( "Master", "You're in the master bedroom." );
 
   m_rooms[startRoom]
 		->SetNeighbours( 
 			nullptr, 				// North
-			m_rooms[caveExit], 		// South
+			m_rooms[foyer], 		// South
 			m_rooms[car], 			// East
 			nullptr );				// West
 
@@ -101,39 +84,94 @@ void Program::SetupRooms()
 			m_rooms[startRoom]  	// West
 			);
 
-	m_rooms[caveExit]
+	m_rooms[foyer]
 		->SetNeighbours( 
 			m_rooms[startRoom], 	// North
-			m_rooms[cave5], 		// South
+			m_rooms[corridor], 		// South
 			nullptr, 				// East
-			m_rooms[caveLoop3] 		// West
+			m_rooms[kitchen] 		// West
 			);
 
-	m_rooms[caveLoop3]
+	m_rooms[kitchen]
 		->SetNeighbours( 
 			nullptr, 				// North
-			m_rooms[caveLoop4], 	// South
-			m_rooms[caveExit], 		// East
+			m_rooms[lounge], 	// South
+			m_rooms[foyer], 		// East
 			nullptr 				// West
 			);
 
-	m_rooms[caveLoop4]
+	m_rooms[lounge]
 		->SetNeighbours( 
-			m_rooms[caveLoop3], 	// North
+			m_rooms[kitchen], 	// North
 			nullptr, 				// South
-			m_rooms[cave5], 		// East
+			m_rooms[corridor], 		// East
 			nullptr 				// West
 			);
 
-	m_rooms[cave5]
+	m_rooms[corridor]
 		->SetNeighbours( 
-			m_rooms[caveExit], 		// North
+			m_rooms[foyer], 		// North
 			nullptr, 				// South
-			m_rooms[forestCave], 	// East
-			m_rooms[caveLoop4]  	// West
+			m_rooms[stairs], 	// East
+			m_rooms[lounge]  	// West
 			);
+
+    m_rooms[stairs]
+		->SetNeighbours( 
+			nullptr, 				// North
+			nullptr, 		// South
+			m_rooms[landing], 			// East
+			nullptr );				// West
+
+        m_rooms[landing]
+		->SetNeighbours( 
+			m_rooms[bed2], 				// North
+			m_rooms[drawRoom], 		// South
+			nullptr, 			// East
+			m_rooms[stairs]     //West
+      );				
+
+        m_rooms[drawRoom]
+		->SetNeighbours( 
+			m_rooms[landing], 				// North
+			nullptr, 		// South
+			nullptr, 			// East
+			nullptr 
+      );				      // West
+
+        m_rooms[bed2]
+		->SetNeighbours( 
+			m_rooms[study], 				// North
+			m_rooms[landing], 		// South
+			m_rooms[bed3], 			// East
+			m_rooms[bed1] 
+      );				        // West
+
+        m_rooms[study]
+		->SetNeighbours( 
+			nullptr, 				// North
+			nullptr, 		// South
+			nullptr, 			// East
+			m_rooms[bed2]         
+      );				// West
+
+        m_rooms[bed3]
+		->SetNeighbours( 
+			nullptr, 				// North
+			nullptr, 		// South
+			nullptr, 			// East
+			m_rooms[bed2] );				// West
+
+        m_rooms[bed1]
+		->SetNeighbours( 
+			nullptr, 				// North
+			nullptr, 		// South
+			m_rooms[bed2], 			// East
+			nullptr 
+      );				// West
 
 	m_ptrCurrentRoom = m_rooms[startRoom];
+  return true;
 }
 
 int Program::CreateRoom( string name, string description )
@@ -150,9 +188,9 @@ string Program::HandleUserInput()
 {
 	string status = "";
 
-  //std::string line;
-  //std::getline( cin, userInput );
-	//string userInput = getline( "Now what?" );
+  string userInput = Menu::GetStringLine( "Now what?" );
+
+  cout << ( "User entered " + userInput );
 
 	if (userInput == "north" || userInput == "n")
 	{
@@ -172,7 +210,7 @@ string Program::HandleUserInput()
 		if (m_ptrCurrentRoom->CanGo(SOUTH))
 		{
 			status = "You went SOUTH";
-			m_ptrCurrentRoom = m_ptrCurrentRoom->ptrNeighbourNorth;
+			m_ptrCurrentRoom = m_ptrCurrentRoom->ptrNeighbourSouth;
 		}
 		else
 		{
@@ -184,8 +222,8 @@ string Program::HandleUserInput()
 	{
 		if (m_ptrCurrentRoom->CanGo(EAST))
 		{
-			status = "You went EAST";
-			m_ptrCurrentRoom = m_ptrCurrentRoom->ptrNeighbourNorth;
+			cout << ("You went EAST");
+			m_ptrCurrentRoom = m_ptrCurrentRoom->ptrNeighbourEast;
 		}
 		else
 		{
@@ -198,7 +236,7 @@ string Program::HandleUserInput()
 		if (m_ptrCurrentRoom->CanGo(WEST))
 		{
 			status = "You went WEST";
-			m_ptrCurrentRoom = m_ptrCurrentRoom->ptrNeighbourNorth;
+			m_ptrCurrentRoom = m_ptrCurrentRoom->ptrNeighbourWest;
 		}
 		else
 		{
