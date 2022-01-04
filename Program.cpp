@@ -1,13 +1,13 @@
-#ifndef PROGRAM_CPP
-#define PROGRAM_CPP
+#ifndef PROGRAM_HPP
+#define PROGRAM_HPP
 
 #include <iostream>
 #include <vector>
 #include <string>
 using namespace std;
 
-#include "Room.cpp"
-#include "Utilities.cpp"
+#include "Room.hpp"
+#include "Utilities.hpp"
 
 class Program
 {
