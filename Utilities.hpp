@@ -11,52 +11,55 @@ using namespace std;
 
 class Menu
 {
-    public:
-    static void Header( const string& header );
-    static void DrawHorizontalBar( int width, char symbol = '-' );
-    static string GetStringLine( const string& message = "" );
+public:
+    static void Header(const string &header);
+    static void DrawHorizontalBar(int width, char symbol = '-');
+    static string GetStringLine(const string &message = "");
     static void Pause();
 };
 
-void Menu::Header( const string& header )                           // output menu corner title header
+void Menu::Header(const string &header) // output menu corner title header
 {
-    DrawHorizontalBar( 80 );
+    DrawHorizontalBar(80);
     string head = "| " + header + " |";
-    cout << " " << head << endl << " ";
-    DrawHorizontalBar( head.size() );
+    cout << " " << head << endl
+         << " ";
+    DrawHorizontalBar(head.size());
     cout << endl;
 }
 
-void Menu::DrawHorizontalBar( int width, char symbol )              // draw horizontal menu bar
+void Menu::DrawHorizontalBar(int width, char symbol) // draw horizontal menu bar
 {
-    for ( int i = 0; i < width; i++ )
+    for (int i = 0; i < width; i++)
     {
         cout << symbol;
     }
     cout << endl;
 }
 
-string Menu::GetStringLine( const string& message )                 // receive user input
+string Menu::GetStringLine(const string &message) // receive user input
 {
-    if ( message != "" )
+    if (message != "")
     {
         cout << " " << message << endl;
     }
     string choice;
-    cout << endl << " >> ";
-    getline( cin, choice );
+    cout << endl
+         << " >> ";
+    getline(cin, choice);
     cout << endl;
     return choice;
 }
 
-void Menu::Pause()                                                  // pause and press enter to continue
+void Menu::Pause() // pause and press enter to continue
 {
-    #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-        system( "pause" );
-    #else
-        cout << endl << "Press ENTER to continue..." << endl;
-        cin.ignore( std::numeric_limits <std::streamsize> ::max(), '\n' );
-    #endif
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+    system("pause");
+#else
+    cout << endl
+         << "Press ENTER to continue..." << endl;
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+#endif
 }
 
 /*
