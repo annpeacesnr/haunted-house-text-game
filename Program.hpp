@@ -39,7 +39,7 @@ Program::Program()
 	}
 }
 
-void Program::Run() // start program
+void Program::Run() // start program with user instructions
 {
 	cout << "" << endl;
 	cout << "[[ Haunted House ]]" << endl;
