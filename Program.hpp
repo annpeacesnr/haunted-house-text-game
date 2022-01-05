@@ -41,6 +41,11 @@ Program::Program()
 
 void Program::Run() // start program
 {
+	cout << "" << endl;
+	cout << "[[ Haunted House ]]" << endl;
+	cout << "Your Uncle Albert is currently out of town - however you have been asked to find and retrieve an ancient scroll located somewhere in his (creepy and haunted) mansion." << endl;
+	cout << "Using the n, s, e, w keys - navigate through each room in the house until you locate the ancient scroll." << endl;
+
 	while (!m_done)
 	{
 		m_ptrCurrentRoom->OutputRoomInfo();
