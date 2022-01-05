@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Program.hpp"
 
-int main()
+int main()       // main class
 {
 	Program program;
 	program.Run();

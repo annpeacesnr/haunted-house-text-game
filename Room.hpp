@@ -5,6 +5,8 @@
 #include <string>
 using namespace std;
 
+#include "Utilities.hpp"
+
 enum Direction { NORTH = 0, SOUTH = 1, EAST = 2, WEST = 3};
 
 struct Room
@@ -18,9 +20,9 @@ struct Room
     void OutputNeighbours();
     bool CanGo( Direction direction );
 
-    string name;
-    string description;
-    Room* ptrNeighbourNorth;
+    string name;                  // room name
+    string description;           // room description
+    Room* ptrNeighbourNorth;      // pointers to neighbouring rooms
     Room* ptrNeighbourSouth;
     Room* ptrNeighbourEast;
     Room* ptrNeighbourWest;
@@ -31,7 +33,7 @@ struct Room
         Setup();
     }
 
-    Room::Room( string name, string description )
+    Room::Room( string name, string description )       // constructor
     {
         Setup ( name, description );
     }
@@ -42,7 +44,7 @@ struct Room
         this->name = name;
         this->description = description;
 
-        ptrNeighbourNorth = nullptr;
+        ptrNeighbourNorth = nullptr;            // null pointers showing initial empty values 
         ptrNeighbourSouth = nullptr;
         ptrNeighbourEast = nullptr;
         ptrNeighbourWest = nullptr;
@@ -50,25 +52,29 @@ struct Room
 
     void Room::SetNeighbours( Room* ptrNorth, Room* ptrSouth, Room* ptrEast, Room* ptrWest )
     {
-        ptrNeighbourNorth = ptrNorth;
+        ptrNeighbourNorth = ptrNorth;           // initialise string variables to neighbour pointers
         ptrNeighbourSouth = ptrSouth;
         ptrNeighbourEast = ptrEast;
         ptrNeighbourWest = ptrWest;
     }
 
-    void Room::OutputRoomInfo()
+    void Room::OutputRoomInfo()                 // output room interface
     {
-        cout << "-------------------------------------------------------------" << endl
+        /*cout << "-------------------------------------------------------------" << endl
             << name << endl
             << description << endl
             << "-------------------------------------------------------------"
             << endl;
+        cout << "-------------------------------------------------------------" << endl << endl;*/
 
-        OutputNeighbours();
-        cout << "-------------------------------------------------------------" << endl << endl;
+    Menu::Header( name );                       // room header
+    cout << description << endl << endl;        // room description
+
+    OutputNeighbours();
+
     }
 
-    void Room::OutputNeighbours()
+    void Room::OutputNeighbours()               // output room neighbours
     {
         cout << "You can go: ";
 
@@ -80,7 +86,7 @@ struct Room
         cout << endl;
     }
 
-    bool Room::CanGo( Direction direction )
+    bool Room::CanGo( Direction direction )         // null pointer conditional check for directions
     {
         if ( direction == NORTH && ptrNeighbourNorth != nullptr )
         {
